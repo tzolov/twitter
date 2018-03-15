@@ -28,6 +28,7 @@ $$twitter.credentials.access-token$$:: $$Access token$$ *($$String$$, default: `
 $$twitter.credentials.access-token-secret$$:: $$Access token secret$$ *($$String$$, default: `$$<none>$$`)*
 $$twitter.credentials.consumer-key$$:: $$Consumer key$$ *($$String$$, default: `$$<none>$$`)*
 $$twitter.credentials.consumer-secret$$:: $$Consumer secret$$ *($$String$$, default: `$$<none>$$`)*
+$$twitter.stream.count$$:: $$the number of previous statuses to stream before transitioning to the live stream.$$ *($$Integer$$, default: `$$0$$`)*
 $$twitter.stream.follow$$:: $$A comma separated list of user IDs, indicating the users to return statuses for in the stream.$$ *($$String$$, default: `$$<none>$$`)*
 $$twitter.stream.language$$:: $$The language of the tweet text.$$ *($$String$$, default: `$$<none>$$`)*
 $$twitter.stream.locations$$:: $$A set of bounding boxes to track.$$ *($$String$$, default: `$$<none>$$`)*

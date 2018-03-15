@@ -16,6 +16,10 @@
 
 package org.springframework.cloud.stream.app.twitterstream.source;
 
+import twitter4j.TwitterStream;
+import twitter4j.TwitterStreamFactory;
+import twitter4j.auth.AccessToken;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -24,13 +28,13 @@ import org.springframework.cloud.stream.app.twitter.TwitterCredentials;
 import org.springframework.cloud.stream.messaging.Source;
 import org.springframework.context.annotation.Bean;
 import org.springframework.integration.core.MessageProducer;
-import org.springframework.social.twitter.api.impl.TwitterTemplate;
 
 /**
  * TwitterStream source app.
  *
  * @author Ilayaperumal Gopinathan
  * @author Gary Russell
+ * @author Christian Tzolov
  */
 @EnableBinding(Source.class)
 @EnableConfigurationProperties({ TwitterCredentials.class, TwitterStreamProperties.class })
@@ -46,18 +50,18 @@ public class TwitterstreamSourceConfiguration {
 	Source source;
 
 	@Bean
-	public MessageProducer twitterStream(TwitterTemplate twitterTemplate) {
-		TwitterStreamMessageProducer messageProducer =
-				new TwitterStreamMessageProducer(twitterTemplate, twitterStreamProperties);
+	public MessageProducer messageProducer(TwitterStream twitterStream) {
+		Twitter4jStreamMessageProducer messageProducer = new Twitter4jStreamMessageProducer(twitterStream, twitterStreamProperties);
 		messageProducer.setOutputChannel(source.output());
 		return messageProducer;
 	}
 
 	@Bean
 	@ConditionalOnMissingBean
-	public TwitterTemplate twitterTemplate() {
-		return new TwitterTemplate(credentials.getConsumerKey(), credentials.getConsumerSecret(),
-				credentials.getAccessToken(), credentials.getAccessTokenSecret());
+	public TwitterStream twitterStream() {
+		TwitterStream twitterStream = new TwitterStreamFactory().getInstance();
+		twitterStream.setOAuthConsumer(credentials.getConsumerKey(), credentials.getConsumerSecret());
+		twitterStream.setOAuthAccessToken(new AccessToken(credentials.getAccessToken(), credentials.getAccessTokenSecret()));
+		return twitterStream;
 	}
-
 }

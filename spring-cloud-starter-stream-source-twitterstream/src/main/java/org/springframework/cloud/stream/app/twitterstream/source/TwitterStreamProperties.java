@@ -24,6 +24,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
  * @author Ilayaperumal Gopinathan
  * @author Gary Russell
  * @author Nicolas Byl
+ * @author Christian Tzolov
  */
 @ConfigurationProperties("twitter.stream")
 public class TwitterStreamProperties {
@@ -47,6 +48,11 @@ public class TwitterStreamProperties {
 	 * Keywords to track.
 	 */
 	private String track;
+
+	/**
+	 * the number of previous statuses to stream before transitioning to the live stream.
+	 */
+	private int count = 0;
 
 	/**
 	 * A set of bounding boxes to track.
@@ -93,4 +99,11 @@ public class TwitterStreamProperties {
 		this.locations = locations;
 	}
 
+	public int getCount() {
+		return count;
+	}
+
+	public void setCount(int count) {
+		this.count = count;
+	}
 }
